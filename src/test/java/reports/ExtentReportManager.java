@@ -46,7 +46,13 @@ public class ExtentReportManager {
 	public void info(String message) {
 		test.info(message);
 	}
-	
+
+	public void pass(String message){
+		test.pass(message);
+	}
+
+	public void fail(String message){
+		test.fail(message);}
 	
 	public  static ExtentReportManager getInstance() {
 		if(manager==null) {

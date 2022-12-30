@@ -5,9 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends Pages{
-
+	private WebDriver driver;
 	public LoginPage(WebDriver driver) {
 		super(driver);
+		this.driver=driver;
 	}
 	
 	
@@ -19,7 +20,20 @@ public class LoginPage extends Pages{
 	
 	@FindBy(xpath="//button[text()='Sign in']")
 	private WebElement signIn;
-	
+
+	@Override
+	public LoginPage
+
+	navigateToMetaInfo(String url) {
+		driver.navigate().to(url);
+		return this;
+	}
+
+	@Override
+	public Pages convertJsonToPojo() {
+		return null;
+	}
+
 	public void login(String userName, String password) {
 		report.info("logged in to application");
 		actions.type(username, userName);

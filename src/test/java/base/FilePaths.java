@@ -5,7 +5,7 @@ import java.util.Date;
 public interface FilePaths {
 	
 	String PROPERTY_FILE="./src/test/resources/commondata.properties";
-	String EXECL_FILE = "";
+	String EXECL_FILE = "./src/test/resources/CampaignTestData.xlsx";
 	String EXTENT_REPORT_PATH="./reports/ExtentReport"+getSystemDate()+".html";
 	
 	static String getSystemDate() {

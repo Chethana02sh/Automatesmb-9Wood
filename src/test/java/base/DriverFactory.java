@@ -12,13 +12,14 @@ public class DriverFactory {
 	 public WebDriver initBrowser(String browserName){
 	        WebDriver driver;
 	        if(browserName.equalsIgnoreCase("chrome")){
-	        	WebDriverManager.chromedriver().setup();
+	        	//WebDriverManager.chromedriver().setup();
+				System.setProperty("webdriver.chrome.driver", "./src/test/resources/drivers/chromedriver.exe");
 	            driver=new ChromeDriver();
 	        }else if(browserName.equalsIgnoreCase("firefox")){
-	        	WebDriverManager.firefoxdriver().setup();
+	        	//WebDriverManager.firefoxdriver().setup();
 	            driver=new FirefoxDriver();
 	        }else{
-	        	WebDriverManager.chromedriver().setup();
+	        	//WebDriverManager.chromedriver().setup();
 	            driver=new ChromeDriver();
 	        }
 	        tlDriver.set(driver);

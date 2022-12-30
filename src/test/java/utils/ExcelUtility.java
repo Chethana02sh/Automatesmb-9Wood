@@ -3,12 +3,20 @@ package utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import base.FilePaths;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtility {
 	
@@ -43,6 +51,49 @@ public class ExcelUtility {
 				e.printStackTrace();
 			}
 	}
+
+	public static Map<String, String> getExcelData(String path,String sheetname) throws Throwable {
+		Map<String, String> map=new HashedMap<>();
+		List<Map<String, String>> list=new ArrayList<>();
+		FileInputStream file=new FileInputStream(path);
+		Workbook workbook=WorkbookFactory.create(file);
+		Sheet sheet = workbook.getSheet(sheetname);
+		int lastRow=sheet.getLastRowNum();
+		for(int i=0;i<lastRow;i++){
+			int lastCell=sheet.getRow(i).getLastCellNum();
+			for(int j=0;j<lastCell;j++){
+				String key=sheet.getRow(0).getCell(j).getStringCellValue();
+				String value=sheet.getRow(i+1).getCell(j).getStringCellValue();
+				map.put(key,value);
+
+			}
+
+		}
+		return map;
+
+	}
+
+	public Object[][] readExcel(String path, String sheetname) throws Throwable {
+		FileInputStream fileInputStream=new FileInputStream(path);
+		XSSFWorkbook wb= new XSSFWorkbook(fileInputStream);
+		XSSFSheet sheet = wb.getSheet(sheetname);
+		int lastRow=sheet.getPhysicalNumberOfRows();
+		Object[][] objArr=new Object[lastRow-1][1];
+		for(int i=0;i<lastRow-1;i++){
+			int lastCell = sheet.getRow(i).getPhysicalNumberOfCells();
+			Map<String, String> map=new HashMap<String, String>();
+			for(int j=0;j<lastCell;j++) {
+				map.put(sheet.getRow(0).getCell(j).getStringCellValue(),
+						sheet.getRow(i+1).getCell(j).getStringCellValue());
+			}
+			objArr[i][0]=map;
+		}
+		return objArr;
+
+	}
+
+
+
 	
 
 }

@@ -38,8 +38,28 @@
     <artifactId>poi</artifactId>
     <version>4.1.2</version>
 </dependency>
+      <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+      <dependency>
+          <groupId>io.rest-assured</groupId>
+          <artifactId>rest-assured</artifactId>
+          <version>4.5.1</version>
+          <scope>test</scope>
+      </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+      <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.24</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.14.1</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
 <dependency>
     <groupId>org.apache.poi</groupId>
     <artifactId>poi-ooxml-schemas</artifactId>
@@ -52,6 +72,12 @@
     <artifactId>extentreports</artifactId>
     <version>5.0.9</version>
 </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>4.1.2</version>
+      </dependency>
 
 <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
 <dependency>
@@ -60,6 +86,17 @@
     <version>4.4.3</version>
 </dependency>
 
+      <dependency>
+          <groupId>com.jayway.jsonpath</groupId>
+          <artifactId>json-path</artifactId>
+          <version>2.7.0</version>
+      </dependency>
+<!--      &lt;!&ndash; https://mvnrepository.com/artifact/com.sikulix/sikulixapi &ndash;&gt;-->
+<!--      <dependency>-->
+<!--          <groupId>com.sikulix</groupId>-->
+<!--          <artifactId>sikulixapi</artifactId>-->
+<!--          <version>2.0.5</version>-->
+<!--      </dependency>-->
 
 
   </dependencies>
@@ -81,10 +118,16 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>3.0.0-M7</version>
+              <configuration>
+                  <suiteXmlFiles>
+                      <suiteXmlFile>testng.xml</suiteXmlFile>
+                  </suiteXmlFiles>
+              </configuration>
+          </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -108,5 +151,15 @@
         </plugin>
       </plugins>
     </pluginManagement>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>9</source>
+                  <target>9</target>
+              </configuration>
+          </plugin>
+      </plugins>
   </build>
 </project>
