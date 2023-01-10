@@ -67,6 +67,7 @@ public class HomePage extends Pages{
 	@FindBy(xpath = "//a[@title='Project Opps']")
 	private WebElement projectOpps;
 
+
 	@Override
 	public HomePage navigateToMetaInfo(String url) {
 		driver.navigate().to(url);
@@ -210,6 +211,12 @@ public class HomePage extends Pages{
 		report.info("click on calendar");
 		actions.click(calendar);
 		return new CalendarPage(driver);
+	}
+
+	public CampaignPage clickONCampaign(){
+		report.info("Click on campaigns");
+		actions.click(campaigns);
+		return new CampaignPage(driver);
 	}
 
 }

@@ -14,6 +14,12 @@ public class LoginPage extends Pages{
 	
 	@FindBy(id="username")
 	private WebElement username;
+	@FindBy(xpath = "//span[@title='Ballistix Automates Admin(admin)']")
+	private WebElement adminIcon;
+	@FindBy(id = "menubar_item_right_LBL_SIGN_OUT")
+	private WebElement signout;
+	@FindBy(xpath = "//button[text()='Get Started']")
+	private WebElement getStarted;
 	
 	@FindBy(id="password")
 	private WebElement password;
@@ -42,5 +48,20 @@ public class LoginPage extends Pages{
 		report.info("password: "+password);
 		actions.click(signIn);
 		report.info("click on sign in");
+	}
+
+	public void logout(){
+		report.info("log out from application");
+		actions.click(adminIcon);
+		actions.jsElementClick(signout);
+	}
+
+	public void clickOnGetStarted() {
+		report.info("click on get started button");
+		try {
+			actions.click(getStarted);
+		}catch (Exception e){
+			System.out.println("get started button not displayed");
+		}
 	}
 }

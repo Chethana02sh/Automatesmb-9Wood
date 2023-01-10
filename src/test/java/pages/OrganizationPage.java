@@ -1,9 +1,6 @@
 package pages;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -36,6 +33,10 @@ public class OrganizationPage extends Pages{
     private List<WebElement> listUpdatesData;
     @FindBy(id="Accounts_detailView_basicAction_LBL_EDIT")
     private WebElement editBtn;
+    @FindBy(xpath = "//span[text()='Search']")
+    private WebElement searchBtn;
+    @FindBy(xpath = "//h4[text()='Activities']/ancestor::div[@class='summaryWidgetContainer']/descendant::a[text() and @Title]")
+    private List<WebElement> ActivityNameList;
     @FindBy(name="website")
     private WebElement wesiteField;
     @FindAll({@FindBy(xpath = "//button[contains(text(),'Import')]"),
@@ -80,8 +81,8 @@ public class OrganizationPage extends Pages{
 
     public OrganizationPage verifyOrganizationNameAndHeaderDisplayed(String orgName){
         report.info("verifing organization name and header");
-        //Assert.assertTrue(organizationHeader.isDisplayed(), "Organization header is not displayed");
-       // Assert.assertEquals(organizationNameField.getText().trim(), orgName);
+        Assert.assertTrue(organizationHeader.isDisplayed(), "Organization header is not displayed");
+        Assert.assertEquals(organizationNameField.getText().trim(), orgName);
         return this;
     }
 
@@ -128,8 +129,8 @@ public class OrganizationPage extends Pages{
         actions.waitOrPause();
         report.info("select csv: "+path);
        // actions.waitAndClick(selectFromComputerBtn);
-//        actions.type(selectFromComputerBtn,path, Keys.ENTER);
-        actions.jsElementClick(selectFromComputerBtn);
+        actions.type(selectFromComputerBtn,path, Keys.ENTER);
+//        actions.jsElementClick(selectFromComputerBtn);
 //        JavascriptExecutor js=(JavascriptExecutor)driver;
 //        js.executeScript("document.getElementById('import_file').click()");
 //        driver.switchTo().activeElement()
@@ -153,6 +154,24 @@ public class OrganizationPage extends Pages{
     public OrganizationPage clickOnImport(){
         report.info("click on import");
         actions.click(importBtn);
+        return this;
+    }
+
+    public OrganizationPage searchForOrganization(String name){
+        report.info("search for organization");
+        actions.click(organizationNameField);
+        driver.switchTo().activeElement().sendKeys(name);
+        report.info("click on search button");
+        actions.click(searchBtn);
+        report.info("click on searched organization");
+        actions.waitOrPause();
+        driver.findElement(By.xpath("//a[text()='"+name+"']")).click();
+        return  this;
+    }
+    public OrganizationPage verifyActivity(String taskName, String eventName){
+        ActivityNameList.stream().forEach(ele-> System.out.println(ele.getText()));
+        Assert.assertEquals(ActivityNameList.get(0).getText().trim(),taskName);
+        Assert.assertEquals(ActivityNameList.get(1).getText().trim(), eventName);
         return this;
     }
 

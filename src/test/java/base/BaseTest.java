@@ -47,7 +47,7 @@ public class BaseTest {
      @AfterMethod
      public void tearDown(ITestResult result){
     	 ExtentReportManager.getInstance().getTestResult(result, getScreenshot());
-    	// driver.close();
+    	 driver.close();
          softAssert.assertAll();
      }
 

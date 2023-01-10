@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
+import java.awt.*;
 import java.util.List;
 
 public class CalendarPage extends Pages{
@@ -28,10 +29,30 @@ public class CalendarPage extends Pages{
     @FindBy(id = "Calendar_listView_basicAction_LBL_ADD_TASK")
     private WebElement addTaskBtn;
     @FindAll({
+    @FindBy(xpath = "//h4[text()='Task Details']/following-sibling::table/descendant::tr[3]/descendant::span[text()]"),
+    @FindBy(xpath = "//h4[text()='Event Details']/following-sibling::table/descendant::tr[3]/descendant::span[text()]")})
+    private WebElement moduleDropDown;
+    @FindBy(xpath = "//i[contains(@id,'_editView_fieldName_parent_id_create')]")
+    private WebElement createPlusBtn;
+    @FindAll({@FindBy(id="account_id_display"),
+    @FindBy(id="Accounts_editView_fieldName_accountname")})
+    private WebElement organizationName;
+    @FindBy(xpath = "//button[text()='Yes']")
+    private WebElement okBtn;
+    @FindBy(id="Contacts_editView_fieldName_firstname")
+    private WebElement firstName;
+    @FindBy(id="Contacts_editView_fieldName_lastname")
+    private WebElement lastname;
+    @FindBy(xpath="//i[contains(@id,'_editView_fieldName_contact_id_create')]")
+    private WebElement contactPlusBtn;
+    @FindAll({
     @FindBy(id = "Calendar_editView_fieldName_subject"), @FindBy(name="subject")})
     private WebElement subjectField;
     @FindBy(xpath = "//td[contains(text(),'Research Code')]/following-sibling::td/descendant::span")
     private WebElement researchDropdown;
+
+    @FindBy(xpath = "//button[@name='saveButton']")
+    private WebElement popupSaveBtn;
     @FindBy(xpath = "//button[text()='Save']")
     private WebElement saveBtn;
     @FindBy(xpath = "//span[@class='subject']")
@@ -40,6 +61,18 @@ public class CalendarPage extends Pages{
     private WebElement researchCodeText;
     @FindBy(id="Calendar_detailView_basicAction_LBL_EDIT")
     private WebElement editBtn;
+    @FindBy(xpath="//td[contains(@id,'detailView_fieldValue_subject')]")
+    private WebElement detailViewSubjectName;
+    @FindBy(xpath = "//td[contains(@id,'detailView_fieldValue_parent_id')]/descendant::a")
+    private WebElement detailedViewRelatedTo;
+    @FindBy(xpath = "//td[contains(@id,'detailView_fieldValue_contact_id')]/descendant::a")
+    private WebElement detailedViewContactName;
+    @FindBy(id="Calendar_listView_basicAction_LBL_ADD_EVENT")
+    private WebElement addEventButton;
+    @FindBy(xpath = "//td[contains(text(),'Status')]/following-sibling::td[1]/descendant::span")
+    private WebElement statusDropDown;
+    @FindBy(xpath = "//td[@id='Events_detailView_fieldValue_eventstatus']/span")
+    private WebElement detailViewStatus;
 
     @Override
     public Pages navigateToMetaInfo(String url) {
@@ -92,6 +125,59 @@ public class CalendarPage extends Pages{
         return  this;
     }
 
+    public CalendarPage clickOnAddTask(){
+        report.info("click on add task");
+        actions.click(addTaskBtn);
+        return this;
+    }
+
+    public CalendarPage enterAllMandatoryFields(String subject, String module, String orgName, String firstname, String lastName){
+        actions.type(subjectField, subject);
+        try {
+            actions.click(moduleDropDown);
+            driver.switchTo().activeElement().sendKeys(module, Keys.ENTER);
+            enterSelectedModuleData(orgName);
+            enterContactMandatoryData(orgName, firstname, lastName);
+        }catch (Exception e){
+            System.out.println("No field or module and contact creation");
+        }
+        return  this;
+    }
+
+    private CalendarPage enterContactMandatoryData(String orgName, String firstname, String lastName) {
+        actions.waitOrPause();
+        actions.click(contactPlusBtn);
+        actions.type(organizationName, orgName);
+        actions.waitOrPause();
+//        WebElement ele = driver.findElement(By.xpath("//ul/li/div[text()='" + orgName + "']"));
+//        actions.mousehoverAndClick(ele);
+//        actions.click(okBtn);
+        try {
+            actions.pressArrowDownKey();
+            actions.waitOrPause();
+            actions.click(okBtn);
+        } catch (AWTException e) {
+            System.out.println("popup not displayed");
+        }
+
+       actions.type(firstName, firstname);
+        actions.type(lastname, lastName);
+        actions.click(popupSaveBtn);
+        return  this;
+    }
+
+    private CalendarPage enterSelectedModuleData(String orgName) {
+        actions.click(createPlusBtn);
+        actions.type(organizationName, orgName);
+        actions.click(popupSaveBtn);
+        return this;
+    }
+
+    public CalendarPage clickOnSaveButton(){
+        actions.click(saveBtn);
+        return  this;
+    }
+
     public CalendarPage verifySubjectAndResearchCode(){
         report.info("verifing subject and research code present in view page");
         Assert.assertEquals(subjectText.getText().trim(), subjectName);
@@ -132,6 +218,52 @@ public class CalendarPage extends Pages{
             WebElement researchTextInList =  driver.findElement(By.xpath("//a[text()='"+subjectName+"']/ancestor::td[@data-name='subject']/following-sibling::td[@title='"+researchName+"']/descendant::span[text()]"));
             Assert.assertEquals(researchName, researchTextInList.getText().trim());
             return this;
+        }
+
+        public CalendarPage verifySubjectName(String subjectName){
+        report.info("Verify subjcet name"+subjectName);
+        Assert.assertEquals(detailViewSubjectName.getText().trim(), subjectName);
+        return this;
+        }
+        public CalendarPage verifyRelatedTo(String relatedTo){
+        report.info("Verify related to :"+relatedTo);
+        Assert.assertEquals(detailedViewRelatedTo.getText().trim(), relatedTo);
+        return  this;
+        }
+        public CalendarPage verifyContactName(String contactname){
+        report.info("verify contact name: "+contactname);
+        Assert.assertTrue(detailedViewContactName.getText().trim().startsWith(contactname));
+        return  this;
+        }
+
+        public CalendarPage verifySavedCalenderTask(String subject, String relatedTo, String contact){
+        verifySubjectName(subject);
+        if(relatedTo!=null && contact!=null) {
+            verifyContactName(contact);
+            verifyRelatedTo(relatedTo);
+        }
+        return this;
+        }
+
+
+
+        public CalendarPage clickOnAddEventBtn(){
+        report.info("click add  event button");
+        actions.click(addEventButton);
+        return this;
+        }
+
+        public CalendarPage selectStatus(String status){
+        report.info("Select status: "+status);
+        actions.click(statusDropDown);
+        driver.switchTo().activeElement().sendKeys(status, Keys.ENTER);
+        return  this;
+        }
+
+        public CalendarPage verifyStatusTxt(String status){
+        report.info("verify statys text");
+        Assert.assertEquals(detailViewStatus.getText().trim(), status);
+        return  this;
         }
     }
 

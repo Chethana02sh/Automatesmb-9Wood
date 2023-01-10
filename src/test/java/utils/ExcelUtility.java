@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -74,6 +75,7 @@ public class ExcelUtility {
 	}
 
 	public Object[][] readExcel(String path, String sheetname) throws Throwable {
+		DataFormatter formatter=new DataFormatter();
 		FileInputStream fileInputStream=new FileInputStream(path);
 		XSSFWorkbook wb= new XSSFWorkbook(fileInputStream);
 		XSSFSheet sheet = wb.getSheet(sheetname);
@@ -83,8 +85,9 @@ public class ExcelUtility {
 			int lastCell = sheet.getRow(i).getPhysicalNumberOfCells();
 			Map<String, String> map=new HashMap<String, String>();
 			for(int j=0;j<lastCell;j++) {
+
 				map.put(sheet.getRow(0).getCell(j).getStringCellValue(),
-						sheet.getRow(i+1).getCell(j).getStringCellValue());
+						formatter.formatCellValue(sheet.getRow(i+1).getCell(j)));
 			}
 			objArr[i][0]=map;
 		}

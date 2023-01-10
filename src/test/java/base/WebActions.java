@@ -1,5 +1,7 @@
 package base;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +42,15 @@ public class WebActions {
 	
 	public void setImpicitWait( int timeInSeconds) {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeInSeconds));
+	}
+
+	public void pressArrowDownKey() throws AWTException {
+		Robot rc=new Robot();
+			rc.keyPress(KeyEvent.VK_DOWN);
+			rc.keyRelease(KeyEvent.VK_DOWN);
+			rc.keyPress(KeyEvent.VK_ENTER);
+			rc.keyRelease(KeyEvent.VK_ENTER);
+
 	}
 	
 	public void maximizeScreen() {

@@ -1,10 +1,9 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
@@ -40,10 +39,20 @@ public class SettingsPage extends Pages {
     private WebElement roleDropDown;
     @FindBy(id = "Users_editView_fieldName_is_admin")
     private WebElement adminCheckbox;
+    @FindBy(name="first_name")
+    private WebElement firstName;
     @FindBy(name = "imagename[]")
     private WebElement uploadImage;
     @FindBy(xpath = "//button[text()='Save']")
     private WebElement saveBtn;
+    @FindBy(xpath = "//td[@id='Users_detailView_fieldValue_user_name']/span")
+    private WebElement usernameTxt;
+    @FindBy(xpath = "//td[@id='Users_detailView_fieldValue_first_name']/span")
+    private WebElement firstNameTxt;
+    @FindBy(xpath = "//td[@id='Users_detailView_fieldValue_email1']/span")
+    private WebElement emailTxt;
+    @FindBy(xpath = "//td[@id='Users_detailView_fieldValue_is_admin']/span")
+    private WebElement isAdminTxt;
     @FindBy(xpath = "//button[text()='Active Users']")
     private WebElement activeUsersBtn;
     @FindBy(name = "user_name")
@@ -67,6 +76,16 @@ public class SettingsPage extends Pages {
     private List<WebElement> selectModuleSuggestions;
     @FindBy(xpath = "//span[text()='Configuration']")
     private WebElement configuration;
+    @FindBy(xpath = "//a[text()='Main Menu']")
+    private WebElement mainMenu;
+    @FindAll({
+    @FindBy(xpath = "(//div[@data-appname='MARKETING']/descendant::div[@title='Campaigns'])[last()]"),
+        @FindBy(xpath = "(//a[@title='Campaigns'])[last()]")})
+    private WebElement campaigns;
+    @FindBy(id="appnavigator")
+    private WebElement hambergerMenu;
+    @FindBy(xpath = "(//span[contains(text(),'MARKETING')])[last()]")
+    private WebElement marketingInMenuList;
     @FindBy(xpath = "//a[text()='Picklist Field Values']")
     private WebElement picklistFieldValues;
 
@@ -113,6 +132,18 @@ public class SettingsPage extends Pages {
 //        Actions action=new Actions(driver);
 //        action.click(uploadImage).sendKeys(imagePath, Keys.ENTER).build().perform();
         return this;
+    }
+
+    public SettingsPage enterUsersMandtoryInfoWithFirstName(String username,String firstname, String emailAddress, String lastname, String password1, String confirmpassword,
+                                                            String rolename, boolean isAdmin, String imagePath){
+        report.info("creating user with below Information");
+        report.info(String.format("username: %s\n first name: %s \n " +
+                "email: %s \n last name: %s \n password: %s \n rolename:%s \n image path: %s", username, firstname, emailAddress, lastname
+        , password1, rolename, imagePath));
+        actions.type(firstName, firstname);
+        enterUsersMandatoryInfo(username, emailAddress, lastname, password1, confirmpassword, rolename, isAdmin, imagePath);
+        return this;
+
     }
 
     public SettingsPage clickOnSave() {
@@ -187,6 +218,35 @@ public class SettingsPage extends Pages {
     public SettingsPage clickOnPicklistFeidValue(){
         report.info("click on picklist field values");
         actions.click(picklistFieldValues);
+        return this;
+    }
+
+    public SettingsPage clickOnMainMenu(){
+        report.info("click on main menu");
+        actions.click(mainMenu);
+        return  this;
+    }
+
+    public SettingsPage verifyCampaignDisplayedInMainMenu(){
+        actions.waitOrPause();
+        report.info("verifing camnpagin displayed in main menu");
+        Assert.assertTrue(campaigns.isDisplayed(),"Campagins not dispalyed");
+        return  this;
+    }
+
+    public SettingsPage verifyCampaignDispayedInMenuList(){
+        report.info("verifing campagin is displayed in menu list");
+        actions.click(hambergerMenu);
+        Actions act=new Actions(driver);
+        act.moveToElement(marketingInMenuList).moveToElement(campaigns).perform();
+        Assert.assertTrue(campaigns.isDisplayed(), "Campaigns not displayed");
+        return  this;
+    }
+
+    public SettingsPage verifyUserAfterSaving(String username, String firstname,String isAdmin){
+        Assert.assertEquals(usernameTxt.getText().trim(), username);
+        Assert.assertEquals(firstNameTxt.getText().trim(), firstname);
+        Assert.assertEquals(isAdminTxt.getText().trim(), isAdmin);
         return this;
     }
 }

@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class OpportunityTest extends BaseTest {
 
-    @Test(dataProvider = "OppertunityData", dataProviderClass = DataProviderCls.class)
-    public void verifyOppertunityPhoneNumber(Map<String, String> data) {
+    @Test(description = "NINEWOOD-279",dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)
+    public void verifyOpportunityPhoneNumber(Map<String, String> data) {
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu()
                 .clickOnOppertunity()
@@ -25,7 +25,7 @@ public class OpportunityTest extends BaseTest {
                 .clickOnPhoneNumberAndVerifyPopUp(data.get("phone"));
     }
 
-    @Test(dataProvider = "OppertunityData", dataProviderClass = DataProviderCls.class)
+    @Test(description = "VD-1218", dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)
     public void verifyContactNameIsDisplayingOnSummaryPageOfOpportunity(Map<String, String> data){
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu()
@@ -42,7 +42,7 @@ public class OpportunityTest extends BaseTest {
         //Todo: verifying name in contact name is pending bcoz of app issue
     }
 
-    @Test(description = "NINEWOOD-272",dataProvider = "OppertunityData", dataProviderClass = DataProviderCls.class)
+    @Test(description = "NINEWOOD-272",dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)
     public void verifyOpportunitiesInList(Map<String, String> data){
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu()

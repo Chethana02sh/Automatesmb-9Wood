@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ProjectOppTest extends BaseTest {
 
-    @Test(dataProvider = "ProjectOppData", dataProviderClass = DataProviderCls.class)
+    @Test(description = "NINEWOOD-260",dataProvider = "ProjectOppData", dataProviderClass = DataProviderCls.class)
     public void verifyMassUpdateProjectOpp(Map<String, String> data){
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu()

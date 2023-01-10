@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class OrganizationTest extends BaseTest {
 
-    @Test
+    @Test(description = "NINEWOOD-306")
     public void verifyUpdatesPrintInCSVFile(){
         SimpleDateFormat time=new SimpleDateFormat("dd_mmm_yy_hh_mm");
         String date = time.format(new Date());
@@ -19,19 +19,19 @@ public class OrganizationTest extends BaseTest {
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu()
                 .clickOnOrganization()
-//                .clickOnAddOrgganizationBtn()
-//                .enterOrganizationName(orgName)
-//                .clickOnSave()
-//                .verifyOrganizationNameAndHeaderDisplayed(orgName)
-//                .clickOnUpdates()
-//                .verifyOrganizationUpdates()
-//                .clickOnEditBtn()
-//                .enterOrganizationName("CRM_Org")
-//                .enterWebsite("www.proposal.com")
-//                .clickOnSave()
-//                .verifyOrganizationNameAndHeaderDisplayed("CRM_Org")
-//                .clickOnUpdates()
-//                .verifyOrganizationUpdates()
+                .clickOnAddOrgganizationBtn()
+                .enterOrganizationName(orgName)
+                .clickOnSave()
+                .verifyOrganizationNameAndHeaderDisplayed(orgName)
+                .clickOnUpdates()
+                .verifyOrganizationUpdates()
+                .clickOnEditBtn()
+                .enterOrganizationName("CRM_Org")
+                .enterWebsite("www.proposal.com")
+                .clickOnSave()
+                .verifyOrganizationNameAndHeaderDisplayed("CRM_Org")
+                .clickOnUpdates()
+                .verifyOrganizationUpdates()
                 .clickOnImportBtn()
                 .selectCsvFileFromComputer(path)
                 .clickOnNextBtn()

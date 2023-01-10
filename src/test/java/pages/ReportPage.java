@@ -84,6 +84,8 @@ public class ReportPage extends Pages {
     private WebElement clearBtn;
     @FindBy(xpath = "//a[contains(text(),'Chart Report')]")
     private WebElement chartReport;
+    @FindBy(xpath = "//td[@data-name='reportname']/span")
+    private WebElement reportTxt;
     @FindBy(xpath = "//label[contains(text(),'Select Related Modules')]/following-sibling::div/descendant::input")
     private WebElement selectRelatedModuleField;
     @FindBy(xpath = "//div[@class='conditionList']/descendant::a/span[text()='Select Field']")
@@ -94,6 +96,10 @@ public class ReportPage extends Pages {
     private WebElement selectGropByField;
     @FindBy(id="chartcontent")
     private WebElement chartContent;
+    @FindBy(xpath = "//td[@data-name='owner']/span")
+    private WebElement reportOwner;
+    @FindBy(xpath = "//div[@class='reportHeader']")
+    private WebElement reportHeader;
 
     @Override
     public Pages navigateToMetaInfo(String url) {
@@ -130,6 +136,10 @@ public class ReportPage extends Pages {
 
     public ReportPage verifyChartContentDisplayed() {
         Assert.assertTrue(chartContent.isDisplayed(), "Chart content is not displayed");
+        return this;
+    }
+    public ReportPage verifyDetailReportContentDisplayed(){
+        Assert.assertTrue(reportHeader.isDisplayed());
         return this;
     }
 
@@ -174,6 +184,7 @@ public class ReportPage extends Pages {
         for(String column:columnsName) {
             actions.type(selectColumnsField, column, Keys.ENTER);
         }
+        driver.switchTo().activeElement().sendKeys(Keys.TAB);
         actions.waitOrPause();
 //        WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(10));
 //        wait.until(ExpectedConditions.elementToBeClickable(selectColumnLabel)).click();
@@ -343,6 +354,14 @@ public class ReportPage extends Pages {
 //        }
 //        return this;
 //    }
+
+    public void VerifyReportNameAndOwnerName(String reportname, String owner){
+        report.info("verifing report name and owner name");
+        actions.type(reportName, reportname, Keys.ENTER);
+        actions.waitOrPause();
+        Assert.assertEquals(reportname, reportTxt.getText().trim());
+        Assert.assertTrue( reportOwner.getText().trim().startsWith(owner), "owner name is not matching");
+    }
 
 }
 
