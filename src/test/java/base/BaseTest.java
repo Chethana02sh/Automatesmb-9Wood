@@ -17,6 +17,8 @@ import pages.LoginPage;
 import reports.ExtentReportManager;
 import utils.FileManager;
 
+import java.util.Random;
+
 public class BaseTest {
 	public WebDriver driver;
 	protected WebActions actions;
@@ -60,6 +62,10 @@ public class BaseTest {
  		TakesScreenshot screenshot=(TakesScreenshot)driver;
  		return screenshot.getScreenshotAs(OutputType.BASE64);
  	}
+
+     public int getRandom(){
+         return new Random().nextInt(1000);
+     }
 
 
 }

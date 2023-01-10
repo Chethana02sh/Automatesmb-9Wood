@@ -219,4 +219,9 @@ public class HomePage extends Pages{
 		return new CampaignPage(driver);
 	}
 
+	public void clickOnContacts(){
+		report.info("click on contact in menu");
+		actions.click(contacts);
+	}
+
 }

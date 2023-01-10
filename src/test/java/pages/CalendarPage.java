@@ -73,6 +73,14 @@ public class CalendarPage extends Pages{
     private WebElement statusDropDown;
     @FindBy(xpath = "//td[@id='Events_detailView_fieldValue_eventstatus']/span")
     private WebElement detailViewStatus;
+    @FindBy(xpath = "//a[text()='All']")
+    private WebElement all;
+    @FindBy(name = "date_start")
+    private WebElement startDate;
+    @FindBy(xpath = "(//input[@value='Close'])[4]")
+    private WebElement close;
+    @FindBy(xpath = "//span[text()='Search']")
+    private WebElement search;
 
     @Override
     public Pages navigateToMetaInfo(String url) {
@@ -264,6 +272,30 @@ public class CalendarPage extends Pages{
         report.info("verify statys text");
         Assert.assertEquals(detailViewStatus.getText().trim(), status);
         return  this;
+        }
+
+        public void clickOnAll(){
+        report.info("click on all");
+        actions.click(all);
+        actions.waitOrPause();
+        }
+
+        public void selectStartDate(String startdate, String endDate, String month, String year){
+        report.info("selecting start date"+startdate+"/"+month+"/"+year);
+        actions.click(startDate);
+            WebElement start = driver.findElement(By
+                    .xpath("(//div[@class='month-wrapper']/descendant::th[text()='" + month + " " + year + "'])[4]/ancestor::table/descendant::tbody/tr/td/div[text()='" + startdate + "']"));
+            start.click();
+            report.info("selecting end date"+endDate+"/"+month+"/"+year);
+            WebElement end = driver.findElement(By
+                    .xpath("(//div[@class='month-wrapper']/descendant::th[text()='" + month + " " + year + "'])[4]/ancestor::table/descendant::tbody/tr/td/div[text()='" + endDate+ "']"));
+            end.click();
+            actions.click(close);
+        }
+
+        public void clickOnSearch(){
+        report.info("click on search");
+        actions.click(search);
         }
     }
 

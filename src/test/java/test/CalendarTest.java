@@ -3,6 +3,7 @@ package test;
 import base.BaseTest;
 import base.DataProviderCls;
 import org.testng.annotations.Test;
+import pages.CalendarPage;
 import pages.HomePage;
 
 import java.util.Map;
@@ -75,8 +76,17 @@ public class CalendarTest extends BaseTest {
                     .searchForOrganization(data.get("ModuleData"))
                     .verifyActivity(data.get("TaskName"),data.get("EventName"));
         }
+    }
 
-
+    @Test(description = "")
+    public void verifyRecordExistInCurrentDate(){
+        HomePage homePage=new HomePage(driver);
+        homePage.clickOnMenu();
+        homePage.clickOnCalendar();
+        CalendarPage calendarPage=new CalendarPage(driver);
+        calendarPage.clickOnAll();
+        calendarPage.selectStartDate("1","10", "january","2023");
+        calendarPage.clickOnSearch();
 
     }
 }
