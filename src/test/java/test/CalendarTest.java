@@ -2,10 +2,13 @@ package test;
 
 import base.BaseTest;
 import base.DataProviderCls;
+import base.JavaUtils;
 import org.testng.annotations.Test;
 import pages.CalendarPage;
 import pages.HomePage;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 
@@ -80,13 +83,16 @@ public class CalendarTest extends BaseTest {
 
     @Test(description = "")
     public void verifyRecordExistInCurrentDate(){
+        JavaUtils javaUtils=new JavaUtils();
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu();
         homePage.clickOnCalendar();
         CalendarPage calendarPage=new CalendarPage(driver);
         calendarPage.clickOnAll();
-        calendarPage.selectStartDate("1","10", "january","2023");
+        calendarPage.selectStartDate("1",javaUtils.getDay(), javaUtils.getCurrentMonth(),javaUtils.getYear());
+        calendarPage.enterAssignedTo("User Administrator");
         calendarPage.clickOnSearch();
-
+        calendarPage.clickOnSelectAllCheckBox();
+        calendarPage.verifySelectedMessageCount();
     }
 }

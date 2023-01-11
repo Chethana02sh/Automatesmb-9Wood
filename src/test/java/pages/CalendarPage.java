@@ -77,10 +77,16 @@ public class CalendarPage extends Pages{
     private WebElement all;
     @FindBy(name = "date_start")
     private WebElement startDate;
-    @FindBy(xpath = "(//input[@value='Close'])[4]")
+    @FindBy(xpath = "//div[@class='date-picker-wrapper'][2]/descendant::input[@value='Close']")
     private WebElement close;
     @FindBy(xpath = "//span[text()='Search']")
     private WebElement search;
+    @FindBy(xpath = "//tr[@class='listViewContentHeader']/following-sibling::tr/th[last()]")
+    private WebElement assignedTo;
+    @FindBy(xpath = "//input[@class='listViewEntriesMainCheckBox' and @type='checkbox']")
+    private WebElement mainCheckBox;
+    @FindBy(id="selectAllMsgDiv")
+    private WebElement selectedTextMsg;
 
     @Override
     public Pages navigateToMetaInfo(String url) {
@@ -281,14 +287,16 @@ public class CalendarPage extends Pages{
         }
 
         public void selectStartDate(String startdate, String endDate, String month, String year){
+        String xpath="//div[@class='date-picker-wrapper'][2]/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+startdate+"']";
+        String xpath2="//div[@class='date-picker-wrapper'][2]/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+endDate+"']";
         report.info("selecting start date"+startdate+"/"+month+"/"+year);
         actions.click(startDate);
             WebElement start = driver.findElement(By
-                    .xpath("(//div[@class='month-wrapper']/descendant::th[text()='" + month + " " + year + "'])[4]/ancestor::table/descendant::tbody/tr/td/div[text()='" + startdate + "']"));
+                    .xpath(xpath));
             start.click();
             report.info("selecting end date"+endDate+"/"+month+"/"+year);
             WebElement end = driver.findElement(By
-                    .xpath("(//div[@class='month-wrapper']/descendant::th[text()='" + month + " " + year + "'])[4]/ancestor::table/descendant::tbody/tr/td/div[text()='" + endDate+ "']"));
+                    .xpath(xpath2));
             end.click();
             actions.click(close);
         }
@@ -296,6 +304,26 @@ public class CalendarPage extends Pages{
         public void clickOnSearch(){
         report.info("click on search");
         actions.click(search);
+        actions.waitOrPause();
         }
+
+    public void enterAssignedTo(String assignedto) {
+       report.info("enter assigned to: "+assignedTo);
+       actions.click(assignedTo);
+       driver.switchTo().activeElement().sendKeys(assignedto, Keys.TAB);
     }
+
+    public void clickOnSelectAllCheckBox(){
+        report.info("click on all select checkbox");
+        actions.click(mainCheckBox);
+        actions.waitOrPause();
+    }
+
+    public void verifySelectedMessageCount(){
+        report.info("verifying selected text greater than 0");
+        String text = selectedTextMsg.getText().trim();
+        int count=actions.getIntFromString(text);
+        Assert.assertTrue(count>0);
+    }
+}
 
