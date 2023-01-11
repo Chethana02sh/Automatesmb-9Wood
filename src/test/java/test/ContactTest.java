@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ContactTest extends BaseTest {
 
-    @Test(description = "")
+    @Test(description = "VD-1249")
     public void verifyFilter() {
         String listName = "Test List Create" + getRandom();
         try {

@@ -78,14 +78,14 @@ public class CalendarTest extends BaseTest {
         }
     }
 
-    @Test(description = "")
+    @Test(description = "VD-1250")
     public void verifyRecordExistInCurrentDate(){
         HomePage homePage=new HomePage(driver);
         homePage.clickOnMenu();
         homePage.clickOnCalendar();
         CalendarPage calendarPage=new CalendarPage(driver);
         calendarPage.clickOnAll();
-        calendarPage.selectStartDate("1","10", "january","2023");
+        calendarPage.selectStartDate("1","10", "january","2023");//this line not working
         calendarPage.clickOnSearch();
 
     }
