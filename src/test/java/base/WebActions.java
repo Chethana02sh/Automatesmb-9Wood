@@ -229,4 +229,14 @@ public class WebActions {
 		actions.moveToElement(ele).click().build().perform();
 	}
 
+	public int getIntFromString(String text){
+		String appendNum="";
+		for(int i=0;i<text.length();i++){
+			if(text.charAt(i)>=48 && text.charAt(i)<=57){
+				appendNum=appendNum+text.charAt(i);
+			}
+		}
+		return Integer.parseInt(appendNum);
+	}
+
 }
