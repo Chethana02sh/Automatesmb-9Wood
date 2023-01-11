@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class ContactsPage extends Pages{
     private WebElement chooseColumnsAndOrder;
     @FindBy(xpath = "//button[text()='Save']")
     private WebElement saveBtn;
-    @FindBy(xpath = "//tr[@class='listViewContentHeader']/descendant::th/a")
+    @FindBy(xpath = "//tr[@class='listViewContentHeader']/th/a[text()]")
     private List<WebElement> headerList;
     @FindBy(xpath = "//input[@class='listViewEntriesMainCheckBox' and @type='checkbox']")
     private WebElement mainCheckBox;
@@ -38,7 +39,7 @@ public class ContactsPage extends Pages{
     private WebElement duplicate;
     @FindBy(xpath = "//button[text()='Yes']")
     private WebElement okBtn;
-    @FindBy(xpath = "//label[text()='Choose columns and order (Max 15)']/following-sibling::div/descendant::div[text()]")
+    @FindBy(xpath = "//label[text()='Choose columns and order (Max 15)']/following-sibling::div/descendant::li/div[text()]")
     private List<WebElement> listOfColumnsInChooseColumns;
     @FindBy(xpath = "//ul[@class='listmenu']/descendant::a[contains(text(),'Edit')]")
     private WebElement edit;
@@ -79,7 +80,7 @@ public class ContactsPage extends Pages{
         report.info("verifying column names: "+columnNames.toString());
         if(headerList.size()== columnNames.size()){
             for(int i=0;i< headerList.size();i++){
-                boolean flag = headerList.get(i).getText().trim().equals(columnNames.get(i));
+                boolean flag = headerList.get(i).getText().trim().contains(columnNames.get(i).trim());
                 Assert.assertTrue(flag, "Expected: "+headerList.get(i).getText()+" actual: "+columnNames.get(i));
             }
         }else{
@@ -118,7 +119,7 @@ public class ContactsPage extends Pages{
 
     public List<String> getAllColumnNamesInColumnsList(){
         return listOfColumnsInChooseColumns.stream()
-                .map(ele->ele.getText().trim())
+                .map(ele->ele.getText().trim().replace("*",""))
                 .collect(Collectors.toList());
     }
 

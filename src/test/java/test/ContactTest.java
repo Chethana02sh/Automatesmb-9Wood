@@ -31,11 +31,22 @@ public class ContactTest extends BaseTest {
             //Edit
             contactsPage.clickOnFilterArrowDown(listName);
             contactsPage.clickOnEdit();
-            listName = "Test List Edit";
+            listName = "Test List Edit"+getRandom();
             contactsPage.enterListNameAndColumnList(listName, null);
             contactsPage.clickOnSaveBtn();
             String countAfterEdit = contactsPage.getTotalRecordCount();
             Assert.assertEquals(countWhileCreate, countAfterEdit);
+
+            //Duplicate
+            contactsPage.clickOnFilterArrowDown(listName);
+            contactsPage.clickOnDuplicate();
+            listName="Test List Duplicate"+getRandom();
+            contactsPage.enterListNameAndColumnList(listName, null);
+            List<String> columnsNames=contactsPage.getAllColumnNamesInColumnsList();
+            contactsPage.clickOnSaveBtn();
+            contactsPage.verifyColumnNamesInTableHeader(columnsNames);
+            String countAfterDuplicate = contactsPage.getTotalRecordCount();
+            Assert.assertEquals(countWhileCreate, countAfterDuplicate);
         } finally {
             ContactsPage contactsPage = new ContactsPage(driver);
             contactsPage.clickOnFilterArrowDown(listName);
