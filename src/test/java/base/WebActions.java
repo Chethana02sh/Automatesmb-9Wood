@@ -239,4 +239,8 @@ public class WebActions {
 		return Integer.parseInt(appendNum);
 	}
 
+	public void clickOnImg(String eleImgPath){
+
+	}
+
 }

@@ -4,11 +4,13 @@ import base.BaseTest;
 import base.DataProviderCls;
 import org.testng.annotations.Test;
 import pages.HomePage;
+import pages.OpportunityPage;
 
 import java.util.Map;
 
 public class OpportunityTest extends BaseTest {
 
+    //Running in mifp
     @Test(description = "NINEWOOD-279",dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)
     public void verifyOpportunityPhoneNumber(Map<String, String> data) {
         HomePage homePage=new HomePage(driver);
@@ -25,6 +27,7 @@ public class OpportunityTest extends BaseTest {
                 .clickOnPhoneNumberAndVerifyPopUp(data.get("phone"));
     }
 
+    //Running in mifp
     @Test(description = "VD-1218", dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)
     public void verifyContactNameIsDisplayingOnSummaryPageOfOpportunity(Map<String, String> data){
         HomePage homePage=new HomePage(driver);
@@ -38,8 +41,8 @@ public class OpportunityTest extends BaseTest {
                 .clickOnCampaginSourceCreateBtn()
                 .enterCampaginName(data.get("campaign name"))
                 .clickOnSaveBtn();
-
-        //Todo: verifying name in contact name is pending bcoz of app issue
+        OpportunityPage opportunityPage=new OpportunityPage(driver);
+        opportunityPage.verifyContactInfoInSummary(data.get("ContactName"), data.get("phone"), data.get("email"));
     }
 
     @Test(description = "NINEWOOD-272",dataProvider = "OpportunityData", dataProviderClass = DataProviderCls.class)

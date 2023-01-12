@@ -87,6 +87,8 @@ public class CalendarPage extends Pages{
     private WebElement mainCheckBox;
     @FindBy(id="selectAllMsgDiv")
     private WebElement selectedTextMsg;
+    @FindBy(xpath = "//button[contains(text(),'Clear')]")
+    private WebElement clearBtn;
 
     @Override
     public Pages navigateToMetaInfo(String url) {
@@ -225,7 +227,13 @@ public class CalendarPage extends Pages{
         return this;
     }
 
-    public CalendarPage verifyEditedTaskInList(){
+    public CalendarPage verifyEditedTaskInList(String subjectName,String researchName){
+            try{
+                actions.click(clearBtn);
+            }catch (Exception e){
+                System.out.println("No element displayed");
+            }
+            actions.waitOrPause();
             actions.click(subjectField);
             driver.switchTo().activeElement().sendKeys(subjectName, Keys.ENTER);
             actions.waitOrPause();
@@ -287,17 +295,18 @@ public class CalendarPage extends Pages{
         }
 
         public void selectStartDate(String startdate, String endDate, String month, String year){
-        String xpath="//div[@class='date-picker-wrapper'][2]/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+startdate+"']";
-        String xpath2="//div[@class='date-picker-wrapper'][2]/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+endDate+"']";
+        String xpath="(//div[@class='date-picker-wrapper']/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+startdate+"'])[5]";
+       // String xpath2="(//div[@class='date-picker-wrapper']/descendant::th[text()='"+month+" "+year+"']/ancestor::table/tbody/tr/td/div[text()='"+endDate+"'])[1]";
+       String xpath2="(//th[text()='"+month+" "+year+"'][1]/ancestor::table/tbody/tr/td/div[text()='"+endDate+"'])[1]";
         report.info("selecting start date"+startdate+"/"+month+"/"+year);
         actions.click(startDate);
             WebElement start = driver.findElement(By
                     .xpath(xpath));
-            start.click();
+            actions.click(start);
             report.info("selecting end date"+endDate+"/"+month+"/"+year);
             WebElement end = driver.findElement(By
                     .xpath(xpath2));
-            end.click();
+            actions.click(end);
             actions.click(close);
         }
 

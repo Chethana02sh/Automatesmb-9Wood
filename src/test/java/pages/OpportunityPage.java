@@ -63,6 +63,18 @@ public class OpportunityPage extends  Pages{
     @FindBy(name="phone")
     private WebElement phoneNumber;
 
+    @FindBy(xpath = "//div[@class='textOverflowEllipsis']")
+    private WebElement contactLastNameTxt;
+    @FindBy(xpath = "//div[@title='Title']")
+    private WebElement titleTxt;
+    @FindBy(xpath = "//div[@title='Office Phone']")
+    private WebElement officePhoneTxt;
+
+    @FindBy(xpath = "//div[@title='Mobile Phone']")
+    private WebElement mobilePhoneTxt;
+    @FindBy(xpath = "//div[@title='Primary Email']")
+    private WebElement emailText;
+
     @Override
     public Pages navigateToMetaInfo(String url) {
         return null;
@@ -153,6 +165,16 @@ public class OpportunityPage extends  Pages{
         report.info("enter assigned to name : "+text);
         driver.switchTo().activeElement().sendKeys(text, Keys.ENTER);
         return  this;
+    }
+
+    public void verifyContactInfoInSummary(String lastname, String phone, String email){
+        report.info("verifying contact last name, phone and email in summary");
+        System.out.println(contactLastNameTxt.getText().trim()+ " "+ lastname);
+        System.out.println(officePhoneTxt.getText().trim()+" "+phone);
+        System.out.println(emailText.getText().trim()+" "+email);
+        Assert.assertTrue(contactLastNameTxt.getText().trim().contains(lastname));
+        Assert.assertTrue(officePhoneTxt.getText().trim().contains(phone));
+        Assert.assertTrue(emailText.getText().trim().contains(email));
     }
 
 }

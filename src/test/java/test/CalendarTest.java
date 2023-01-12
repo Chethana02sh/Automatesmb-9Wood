@@ -14,8 +14,9 @@ import java.util.Random;
 
 public class CalendarTest extends BaseTest {
 
+    //Run in mifp
     @Test (description = "NINEWOOD-282")
-    public void verifyResearchCoadeShowingInTaskListView(){
+    public void verifyResearchCodeShowingInTaskListView(){
         int random=new Random().nextInt(1000);
         String subject="Research Test"+random;
         HomePage homePage=new HomePage(driver);
@@ -42,8 +43,10 @@ public class CalendarTest extends BaseTest {
         homePage.clickOnMenu()
                 .clickOnCalendar()
                 .editExistingTaskInList("No Contact Attached")
-                .verifySubjectAndResearchCode()
-                .verifyEditedTaskInList();
+                .verifySubjectAndResearchCode();
+        homePage.clickOnMenu()
+                .clickOnCalendar()
+                .verifyEditedTaskInList(subject,"No Contact Attached");
     }
 
     @Test(description = "NINEWOOD-281")

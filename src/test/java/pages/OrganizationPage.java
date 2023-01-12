@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class OrganizationPage extends Pages{
@@ -129,12 +132,23 @@ public class OrganizationPage extends Pages{
         actions.waitOrPause();
         report.info("select csv: "+path);
        // actions.waitAndClick(selectFromComputerBtn);
-        actions.type(selectFromComputerBtn,path, Keys.ENTER);
-//        actions.jsElementClick(selectFromComputerBtn);
-//        JavascriptExecutor js=(JavascriptExecutor)driver;
-//        js.executeScript("document.getElementById('import_file').click()");
-//        driver.switchTo().activeElement()
-//                        .sendKeys(path, Keys.ENTER);
+       // actions.type(selectFromComputerBtn,path, Keys.ENTER);
+        //actions.jsElementClick(selectFromComputerBtn);
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        js.executeScript("document.getElementById('import_file').click();");
+        System.out.println("clicked on select file");
+        actions.waitOrPause();
+        StringSelection selection=new StringSelection(path);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+        try {
+            Robot rc=new Robot();
+            rc.keyPress(KeyEvent.VK_V);
+            rc.keyRelease(KeyEvent.VK_V);
+            rc.keyPress(KeyEvent.VK_ENTER);
+            rc.keyRelease(KeyEvent.VK_ENTER);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
         clickOnNextBtn();
         return this;
     }
